@@ -1,0 +1,13 @@
+services:
+  gpu-test:
+    image: ubuntu
+    container_name: gpu-test-container
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: cdi
+              device_ids:
+                - nvidia.com/gpu=all
+    command: ["nvidia-smi"]
