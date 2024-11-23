@@ -10,4 +10,4 @@ docker ps -a
 sudo systemctl restart docker
 docker ps -a
 docker inspect 0d1bbc2c74a1 | jq '.[].State'
-docker-compose up -d
+# docker-compose up -d
