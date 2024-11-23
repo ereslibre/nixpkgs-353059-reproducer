@@ -10,4 +10,4 @@ services:
             - driver: cdi
               device_ids:
                 - nvidia.com/gpu=all
-    command: ["nvidia-smi"]
+    command: ["sh", "-c", "nvidia-smi && sleep infinity"]
