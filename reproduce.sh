@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+docker ps -aq | xargs docker rm -f
 sudo systemctl start nvidia-container-toolkit-cdi-generator
 sudo systemctl start docker
 if ! docker ps -a | grep gpu-test-container; then
