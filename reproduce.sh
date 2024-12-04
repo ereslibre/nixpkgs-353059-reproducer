@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
+
+run_docker() {
+    ~/.wip/dockerd &> output.txt &
+    echo $!
+}
+
 docker ps -aq | xargs docker rm -f
 sudo systemctl start nvidia-container-toolkit-cdi-generator
-# sudo systemctl start docker
-~/.wip/dockerd &
-DOCKERD_PID=$!
+DOCKERD_PID=$(run_docker)
 while true; do
     if docker ps; then
         break
@@ -14,17 +18,12 @@ if ! docker ps -a | grep gpu-test-container; then
     docker-compose up -d
 fi
 docker ps -a
-# sudo systemctl stop docker
-kill $DOCKER_PID
-# sudo systemctl list-units | grep docker | grep scope  | awk '{print $1}' | xargs -I{} sudo systemctl stop {}
-# sudo systemctl daemon-reload
+kill $DOCKERD_PID
 tree /var/run/cdi
 sudo systemctl stop nvidia-container-toolkit-cdi-generator
 tree /var/run/cdi
 docker ps -a
-# sudo systemctl restart docker
-~/.wip/dockerd &
-DOCKERD_PID=$!
+DOCKERD_PID=$(run_docker)
 while true; do
     if docker ps; then
         break
@@ -33,4 +32,4 @@ while true; do
 done
 docker ps -a
 docker inspect $(docker ps -aq --filter=name=gpu-test-container) | jq '.[].State'
-kill $DOCKER_PID
+kill $DOCKERD_PID
