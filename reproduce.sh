@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export DOCKER_HOST=unix:///run/user/1000/docker.sock
+
 run_docker() {
     ~/.wip/dockerd &> output.txt &
     echo $!
