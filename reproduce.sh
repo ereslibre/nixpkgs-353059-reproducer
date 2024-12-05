@@ -9,6 +9,12 @@ run_docker() {
 
 docker ps -aq | xargs docker rm -f
 sudo systemctl start nvidia-container-toolkit-cdi-generator
+while true; do
+    if ls /var/run/cdi; then
+        break
+    fi
+    sleep 0.5
+done
 DOCKERD_PID=$(run_docker)
 while true; do
     if docker ps; then
