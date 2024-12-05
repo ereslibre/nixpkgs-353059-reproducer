@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-export DOCKER_HOST=unix:///run/user/1000/docker.sock
+export DOCKER_HOST=unix:///tmp/docker-testing
+
+rm /tmp/docker-testing
+pkill docker
+pkill dockerd
+pkill rootlesskit
+pkill containerd
 
 run_docker() {
     ~/.wip/dockerd &> output.txt &
@@ -41,3 +47,4 @@ done
 docker ps -a
 docker inspect $(docker ps -aq --filter=name=gpu-test-container) | jq '.[].State'
 kill $DOCKERD_PID
+echo "> Waiting for dockerd stop (PID: $DOCKERD_PID)"
